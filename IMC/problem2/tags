@@ -1,0 +1,5 @@
+Choice	Choice.h	/^enum Choice {$/
+CompPlayer	CompPlayer.h	/^CompPlayer::CompPlayer() {$/
+Mmain.cpp	main.cpp	/^int main() {$/
+isRealPlayerWinner	main.cpp	/^bool isRealPlayerWinner (Choice choiceR, Choice ch/
+play	CompPlayer.h	/^Choice CompPlayer::play() {$/

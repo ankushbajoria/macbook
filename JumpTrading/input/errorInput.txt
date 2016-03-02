@@ -1,0 +1,11 @@
+V,100004,B,-5,100 // invalid message
+A,100000,S,1,1075
+A,100000,B,1,1050 // duplicate orderid
+A,100001,B,1,1050
+X,100002,B,1,1050 // invalid orderid for remove
+M,100004,B,1,1050
+A,100004,B,1,-1050 // negative price
+A,100004,B,-1,1050 // negative qty
+T,2,1050  // tick exceeding level
+,,,, // corrupted message
+A,100004,B,1,1100 // buy above sell
