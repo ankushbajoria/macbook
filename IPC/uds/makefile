@@ -5,4 +5,4 @@ client: client.c
 	gcc -o myclient client.c
 
 clean:
-	${RM} myserver myclient
+	${RM} myserver myclient demo_socket
