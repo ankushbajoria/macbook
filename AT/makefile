@@ -1,10 +1,15 @@
-rpsGame: main.cpp
+postFixCalc: main.cpp
 	g++ -o postfixCalc main.cpp PostFixCalculator.cpp -std=c++0x
 
 LIBS = -lboost_unit_test_framework
 
-test:	PostFixCalculator.cpp PostFixCalculator.t.cpp
-	g++ -o test PostFixCalculator.cpp PostFixCalculator.t.cpp $(LIBS)
+testexec : PostFixCalculator.cpp PostFixCalculator.t.cpp
+	g++ -o testexec PostFixCalculator.cpp PostFixCalculator.t.cpp ${LIBS}
+
+runtest:
+	./testexec
+
+test: testexec runtest
 
 clean:
-	$(RM) postfixCalc test
+	$(RM) postfixCalc testexec

@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#include <chrono>
+
 int main() {
   size_t n;
   std::cin >> n ;
@@ -11,7 +13,12 @@ int main() {
   std::cin >> numCores ;
   std::cout << "\nrequired number of cores : " << numCores << std::endl << std::endl;
 
+  auto start = std::chrono::high_resolution_clock::now();
   std::list<uint32_t> allocatedMachines = graph.allocateMachines(numCores);
+  auto end = std::chrono::high_resolution_clock::now();
+
+  std::chrono::duration<double> diff = end - start;
+
   typedef std::list<uint32_t>::iterator Iter;
 
   if (allocatedMachines.size() > 0) { 
@@ -23,5 +30,7 @@ int main() {
   }
 
   std::cout << std::endl;
+
+  std::cout << "time to allocate:" << std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count() << "ns" << std::endl;
 }
 

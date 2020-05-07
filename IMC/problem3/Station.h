@@ -22,7 +22,6 @@ class Station {
 
     uint32_t m_id;
     uint32_t m_numStations;
-    uint32_t m_timeToUnload; // time to unload a packet, in us;
     pthread_mutex_t m_lockOnTrack ;
     pthread_mutex_t m_lock ; 
 

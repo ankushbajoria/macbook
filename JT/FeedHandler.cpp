@@ -1,8 +1,8 @@
 #include "FeedHandler.h"
 
 FeedHandler::FeedHandler(std::ostream* cout)
-  : m_cout(cout),
-    m_book(cout) {
+  : m_book(cout)
+  , m_cout(cout) {
 }
 
 void
@@ -54,11 +54,11 @@ void FeedHandler::printBookMid() const {
   auto topAskSz = m_book.getQtyAtLevel('S', 0);
 
   if (topBidSz != 0 && topAskSz != 0) {
-    auto mid = (m_book.getPriceAtLevel('B', 0) + m_book.getPriceAtLevel('S', 0)) / 2.0;
+    // auto mid = (m_book.getPriceAtLevel('B', 0) + m_book.getPriceAtLevel('S', 0)) / 2.0;
 
-    *m_cout << mid << std::endl;
+    // *m_cout << mid << std::endl;
   } else {
-    *m_cout << "NAN" << std::endl;
+    // *m_cout << "NAN" << std::endl;
   }
 }
 

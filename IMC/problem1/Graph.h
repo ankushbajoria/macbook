@@ -31,7 +31,7 @@ class Graph {
     Graph(size_t n);
 
     void read();
-    uint32_t distance(int from, int to);
+    uint32_t distance(size_t from, size_t to);
     std::list<uint32_t> allocateMachines(int n /* numCoresRequired */);
     uint32_t freeCpu(uint32_t nodeId) { return m_freeVector[nodeId]; }
 };
@@ -56,7 +56,7 @@ void Graph::read() {
     }
   }
 
-  for (int i = 0; i < m_numNodes; i++) {
+  for (size_t i = 0; i < m_numNodes; i++) {
     uint32_t load;
     std::cin >> load;
     m_freeVector[i] = (NUM_CPUS - load);
@@ -66,7 +66,7 @@ void Graph::read() {
   std::cout << "\nreading of graph completed!" << std::endl;
 }
 
-uint32_t Graph::distance(int from, int to) {
+uint32_t Graph::distance(size_t from, size_t to) {
   if (from >= m_numNodes || to >= m_numNodes) {
     return 0;
   }

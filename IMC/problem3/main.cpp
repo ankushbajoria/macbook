@@ -2,9 +2,6 @@
 
 void* run(void* trainPtr);
 
-//pthread_mutex_t track1 = PTHREAD_MUTEX_INITIALIZER;
-//pthread_mutex_t track2 = PTHREAD_MUTEX_INITIALIZER;
-
 int main() {
   // initialize random seed
   srand(time(NULL));

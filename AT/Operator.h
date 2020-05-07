@@ -1,5 +1,5 @@
-#ifndef OPERAdoubleOR_H_
-#define OPERAdoubleOR_H_
+#ifndef OPERATOR_H_
+#define OPERATOR_H_
 
 #include <math.h>
 
@@ -44,4 +44,4 @@ class OperatorModulo : public OperatorBase {
   }
 };
 
-#endif // OPERAdoubleOR_H_
+#endif // OPERATOR_H_

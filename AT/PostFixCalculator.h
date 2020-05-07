@@ -63,7 +63,7 @@ std::vector<std::string>
 PostFixCalculator::splitString(std::string input, char delimiter) {
   std::vector<std::string> ret;
   int prevPos = 0;
-  int pos = input.find(delimiter);
+  int pos     = input.find(delimiter);
 
   while (pos != std::string::npos) {
     ret.push_back(input.substr(prevPos, pos - prevPos));
@@ -124,7 +124,7 @@ PostFixCalculator::calculate(bool& success, const std::string& input) {
     }
   }
 
-  if (tokens.size()!= 1) {
+  if (tokens.size() != 1) {
     success = false;
     return 0;
   }
@@ -132,5 +132,4 @@ PostFixCalculator::calculate(bool& success, const std::string& input) {
   success = true;
   return tokens.top();
 }
-
 #endif // POSTFIXCALCULATOR_H_
