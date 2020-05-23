@@ -1,8 +1,0 @@
-Terminology:
-1. Score(NODE) : 2*numFreeCpu + sum over all i (numFreeCpu/EdgeLength(NODE,i))
-2. Score(EDGE) : numFreeCpu(edge.to) / EdgeLength(edge.from, edge.to);
-
-Algorithm:
-1. Select a master node - the node with the maximum node score;
-2. Maintain a priority queue of edges with priority being Edge Score.
-3. Insert all edges connected to masterNode to the priority queue, and then iterate until either we have got n cpus or the queue is empty
