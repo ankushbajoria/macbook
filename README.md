@@ -1,4 +1,4 @@
-# LOCAL projects
+# personal projects
 
 PostFixCalculator:
 ------------------
