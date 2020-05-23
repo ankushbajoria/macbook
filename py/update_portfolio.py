@@ -1,25 +1,21 @@
 import argparse
-import pandas as pd
-from pathlib import Path
-
-import yfinance as yf
-from forex_python.converter import CurrencyRates
-import functools
-
-from mftool import Mftool
-
-import subprocess
-import shutil
-import pprint
-import datetime
 import copy
-
+import datetime
+import functools
+import shutil
 import smtplib
-from os.path import basename
+import subprocess
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.utils import COMMASPACE, formatdate
+from email.utils import formatdate
+from os.path import basename
+from pathlib import Path
+
+import pandas as pd
+import yfinance as yf
+from forex_python.converter import CurrencyRates
+from mftool import Mftool
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -29,16 +25,16 @@ SMTP_USERNAME = "ankushbajoria007@gmail.com"
 SMTP_PASSWORD = "rqffvzoknjfwyhxe"
 
 
-def send_mail(send_to, subject, body, type="text", files=None):
+def send_mail(send_to, subject, body, text_type="text", files=None):
     assert isinstance(send_to, list)
 
     msg = MIMEMultipart()
     msg['From'] = SMTP_USERNAME 
-    msg['To'] = COMMASPACE.join(send_to)
+    msg['To'] = ' '.join(send_to)
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject
 
-    msg.attach(MIMEText(body, type))
+    msg.attach(MIMEText(body, text_type))
 
     for f in files or []:
         with open(f, "rb") as fil:
@@ -49,7 +45,6 @@ def send_mail(send_to, subject, body, type="text", files=None):
         # After the file is closed
         part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
         msg.attach(part)
-
 
     smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
 
@@ -79,7 +74,7 @@ def get_last_close(symbol: str, t: str):
     return float(Mftool().get_scheme_quote(symbol)['nav'])
 
 
-def update_prices(portfolio: pd.DataFrame) -> pd.DataFrame:
+def update_prices(portfolio: pd.DataFrame):
     cost_basis = 0
     mark_to_market = 0
 
@@ -87,7 +82,7 @@ def update_prices(portfolio: pd.DataFrame) -> pd.DataFrame:
     pnls = []
     notionals = []
     invested_amounts = []
-    for i,row in portfolio.iterrows():
+    for i, row in portfolio.iterrows():
         last_close = get_last_close(row["symbol"], row["type"])
         current_conversion = get_conversion(row["currency"])
         cost_basis += row["buy_price"] * row["position"] / current_conversion
@@ -128,7 +123,7 @@ def main():
 
     portfolio = pd.read_csv(portfolio_path)
     
-    portfolio, total = update_prices(portfolio[portfolio.symbol!="total"])
+    portfolio, total = update_prices(portfolio[portfolio.symbol != "total"])
 
     cols = ["type", "desc", "category", "symbol", "currency", "position", "buy_price",
             "current_price", "invested", "notional", "unrealized_pnl", "category_return", 
@@ -165,7 +160,7 @@ def main():
         send_mail(send_to=["ankushbajoria007@gmail.com"],
                   subject=f"portfolio {datetime.date.today()}",
                   body=portfolio.to_html(float_format=lambda x: '%.2f' % x),
-                  type='html')
+                  text_type='html')
 
     return subprocess.run(["open", str(portfolio_path)]).returncode if not args.mail else 0
 
