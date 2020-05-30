@@ -69,17 +69,20 @@ def allocate(graph: Graph, colos: Dict[str, Colo], workload: int) -> Dict[Machin
     optimal_traversal_list = []
 
     for c in colos:
-        workload_cp = workload
-        traversal_list = []
+        workload_cp = workload - colos[c].capacity
+        traversal_list = [c]
         network_distance = 0
 
-        for node in nx.bfs_tree(graph, c):
+        descendents = list(nx.descendants(graph, c))
+        descendents.sort(key=lambda x: nx.shortest_path_length(graph, c, x, weight='weight'), reverse=True)
+
+        for node in descendents:
+            if workload_cp <= 0:
+                break
+
             workload_cp -= colos[node].capacity
             traversal_list.append(node)
             network_distance += colos[c].distance(node)
-
-            if workload_cp <= 0:
-                break
 
         if workload_cp <= 0 and optimal_network_distance > network_distance:
             optimal_traversal_list = traversal_list
@@ -92,6 +95,9 @@ def allocate(graph: Graph, colos: Dict[str, Colo], workload: int) -> Dict[Machin
     allocation = {}
     for c in optimal_traversal_list:
         for m in colos[c].machines:
+            if m.available == 0:
+                continue
+
             allocation[m] = min(workload, m.available)
             workload -= allocation[m]
 
