@@ -107,7 +107,7 @@ def main():
     colos = {name: Colo(name, latency, [x for x in machines if x.colo == name]) for name, latency in intercolo.items()}
     graph = nx.Graph()
 
-    for c1, c2 in itertools.combinations(colos.keys(), 2):
+    for c1, c2 in itertools.permutations(colos.keys(), 2):
         graph.add_edge(c1, c2, weight=colos[c2].capacity / colos[c1].distance(c2))
 
     while True:
