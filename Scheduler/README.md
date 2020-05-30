@@ -1,3 +1,5 @@
+Description:
+------------
 Say that you are an engineer trying to assign machines to your newly created distributed system
 consisting of a large number of components. You have thousands of machines at your disposal
 in data centers around the world. The catch is that most, if not all, machines are already running
@@ -12,3 +14,6 @@ loaded factor of 4 can sustain 6 more components.
 Scheduler automatically suggests a subset of machines out of the available pool (machines with the loaded factor < 10), so that their collective network distance is minimal.
 
 
+Usage:
+------
+python scheduler.py --machine-info inputs/machine_info.csv --intercolo inputs/intercolo.csv
