@@ -5,9 +5,10 @@ some processes. The input to your program, coming from our Inventory Management 
 a list of machines together with their loaded factor (from 1-10) and their location as well as a
 matrix of distances between various data centers. 
 
-Scheduler automatically suggests a subset of machines out of the available pool (machines with the loaded factor < 10), so that their collective network distance is minimal.
-
 Loaded factor is defined as the number of components running on a machine; that is, a machine
 with a loaded factor of 10 cannot sustain any more components, whereas a machine with a
 loaded factor of 4 can sustain 6 more components.
+
+Scheduler automatically suggests a subset of machines out of the available pool (machines with the loaded factor < 10), so that their collective network distance is minimal.
+
 
