@@ -1,7 +1,6 @@
 import argparse
 import itertools
 from pathlib import Path
-from pprint import pprint
 from typing import List, Dict
 
 import networkx as nx
@@ -105,7 +104,6 @@ def main():
 
     machines = [Machine(name, row["colo"], row["load"]) for name, row in machine_info.iterrows()]
     machines.sort(key=lambda x: x.colo)
-
     colos = {name: Colo(name, latency, [x for x in machines if x.colo == name]) for name, latency in intercolo.items()}
     graph = nx.Graph()
 
