@@ -48,11 +48,23 @@ class Colo:
         return self.latency.get(other, np.inf)
 
 
+class Graph(nx.Graph):
+    def __init__(self, colos: Dict[str, Colo]):
+        super().__init__()
+
+        for c1, c2 in itertools.permutations(colos.keys(), 2):
+            self.add_edge(c1, c2, weight=colos[c2].capacity / colos[c1].distance(c2))
+
+        for c in colos:
+            if not self.has_edge(c, c):
+                self.add_edge(c, c, weight=np.inf)
+
+
 class NoAllocationPossibleError(Exception):
     pass
 
 
-def allocate(graph: nx.Graph, colos: Dict[str, Colo], workload: int) -> Dict[Machine, int]:
+def allocate(graph: Graph, colos: Dict[str, Colo], workload: int) -> Dict[Machine, int]:
     optimal_network_distance = np.inf
     optimal_traversal_list = []
 
@@ -61,7 +73,7 @@ def allocate(graph: nx.Graph, colos: Dict[str, Colo], workload: int) -> Dict[Mac
         traversal_list = []
         network_distance = 0
 
-        for node in nx.bfs_tree(graph, c, depth_limit=1):  # every colo is ideally connected to every other colo
+        for node in nx.bfs_tree(graph, c):
             workload_cp -= colos[node].capacity
             traversal_list.append(node)
             network_distance += colos[c].distance(node)
@@ -105,10 +117,8 @@ def main():
     machines = [Machine(name, row["colo"], row["load"]) for name, row in machine_info.iterrows()]
     machines.sort(key=lambda x: x.colo)
     colos = {name: Colo(name, latency, [x for x in machines if x.colo == name]) for name, latency in intercolo.items()}
-    graph = nx.Graph()
 
-    for c1, c2 in itertools.permutations(colos.keys(), 2):
-        graph.add_edge(c1, c2, weight=colos[c2].capacity / colos[c1].distance(c2))
+    graph = Graph(colos)
 
     while True:
         try:
