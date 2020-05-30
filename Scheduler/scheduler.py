@@ -61,7 +61,7 @@ def allocate(graph: nx.Graph, colos: Dict[str, Colo], workload: int) -> Dict[Mac
         traversal_list = []
         network_distance = 0
 
-        for node in nx.bfs_tree(graph, c):
+        for node in nx.bfs_tree(graph, c, depth_limit=1):  # every colo is ideally connected to every other colo
             workload_cp -= colos[node].capacity
             traversal_list.append(node)
             network_distance += colos[c].distance(node)
