@@ -8,6 +8,10 @@ OrderBook:
 ----------
 Implement a MD book structure to store financial tick by tick data.
 
+Scheduler:
+----------
+Optimally schedule jobs on a given set of distributed machines such that collective network distance is minimum
+
 PY:
 ---
 Some local python practice projects

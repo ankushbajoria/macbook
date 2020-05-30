@@ -1,0 +1,16 @@
+machine,colo,load
+machine1.cme,cme,8
+machine1.chi,chi,7
+machine1.nasd,nasd,7
+machine2.cme,cme,2
+machine2.chi,chi,2
+machine2.nasd,nasd,9
+machine3.cme,cme,3
+machine3.chi,chi,1
+machine3.nasd,nasd,10
+machine4.cme,cme,4
+machine4.chi,chi,7
+machine4.nasd,nasd,6
+machine5.cme,cme,4
+machine5.chi,chi,4
+machine5.nasd,nasd,1
