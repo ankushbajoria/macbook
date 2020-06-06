@@ -12,6 +12,10 @@ Scheduler:
 ----------
 Optimally schedule jobs on a given set of distributed machines such that collective network distance is minimum
 
+RockPaperScissors:
+-----------------
+Command line simulation of popular rock-paper-scissors game
+
 PY:
 ---
 Some local python practice projects
