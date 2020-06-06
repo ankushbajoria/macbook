@@ -4,14 +4,14 @@ from typing import Any
 from RockPaperScissors.interfaces import Player
 from enum import Enum, auto
 
-from RockPaperScissors.utils import ListEnumMeta
+from RockPaperScissors.utils import PrettyPrintEnumMeta
 
 
 class InvalidChoiceException(Exception):
     pass
 
 
-class Choice(Enum, metaclass=ListEnumMeta):
+class Choice(Enum, metaclass=PrettyPrintEnumMeta):
     ROCK = auto()
     PAPER = auto()
     SCISSORS = auto()

@@ -1,7 +1,7 @@
 from enum import EnumMeta
 
 
-class ListEnumMeta(EnumMeta):
+class PrettyPrintEnumMeta(EnumMeta):
     def __str__(cls):
         result = f"{cls.__name__.lower()}s are: ["
 

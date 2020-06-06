@@ -4,10 +4,10 @@ from typing import List
 
 from RockPaperScissors.interfaces import Game, Player
 from RockPaperScissors.players import Choice
-from RockPaperScissors.utils import ListEnumMeta
+from RockPaperScissors.utils import PrettyPrintEnumMeta
 
 
-class Compare(Enum, metaclass=ListEnumMeta):
+class Compare(Enum, metaclass=PrettyPrintEnumMeta):
     WINS = auto()
     LOSES = auto()
     IS_TIED = auto()
