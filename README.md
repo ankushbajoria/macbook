@@ -16,6 +16,10 @@ RockPaperScissors:
 -----------------
 Command line simulation of popular rock-paper-scissors game
 
+Trains:
+------
+Simulate a trains moving on a circular track using python's asyncio
+
 PY:
 ---
 Some local python practice projects
