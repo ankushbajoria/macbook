@@ -18,7 +18,7 @@ Command line simulation of popular rock-paper-scissors game
 
 Trains:
 ------
-Simulate a trains moving on a circular track using python's asyncio
+Simulate trains moving on a circular track loading/unloading cargo using python's asyncio
 
 PY:
 ---
