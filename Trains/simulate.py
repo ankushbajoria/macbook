@@ -43,7 +43,7 @@ class Train:
         share = min(units, available)
 
         if share == 0:
-            return units
+            return 0
 
         await asyncio.sleep(int(np.ceil(share * UNIT_LOAD_TIME)))
         logging.info(f"{self.name} : loaded {share} units cargo destined to station {destination}")
@@ -70,8 +70,8 @@ class Train:
 
 class Station:
     def __init__(self, number: StationId):
-        self.number = number
-        self.name = f"Station [{self.number}]"
+        self.id = number
+        self.name = f"Station [{self.id}]"
         self.cargo: Dict[StationId, int] = defaultdict(int)
 
     def drop_cargo(self, destination: StationId, amount: int):
@@ -81,7 +81,7 @@ class Station:
     async def arrive(self, train: Train):
         logging.info(f"{self.name} : train {train.id} arrived")
 
-        received = await train.unload_cargo(self.number)
+        received = await train.unload_cargo(self.id)
         if received != 0:
             logging.info(f"{self.name} : received {received} units cargo delivered by train {train.id}")
 
