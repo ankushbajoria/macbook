@@ -75,6 +75,9 @@ class Station:
         self.cargo: Dict[StationId, int] = defaultdict(int)
 
     def drop_cargo(self, destination: StationId, amount: int):
+        if amount == 0:
+            return
+
         self.cargo[destination] += amount
         logging.info(f"{self.name} : villager dropped {amount} units of cargo destined to station {destination}")
 
@@ -87,9 +90,9 @@ class Station:
 
         for dst in self.cargo:
             loaded = await train.load_cargo(dst, self.cargo[dst])
-            self.cargo[dst] -= loaded
-            if loaded == 0:
+            if loaded == 0 and self.cargo[dst] != 0:
                 break
+            self.cargo[dst] -= loaded
 
 
 async def move_train(train: Train, tracks: List[Track], stations: Dict[StationId, Station]):
