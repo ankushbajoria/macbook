@@ -75,9 +75,6 @@ class Station:
         self.cargo: Dict[StationId, int] = defaultdict(int)
 
     def drop_cargo(self, destination: StationId, amount: int):
-        if amount == 0:
-            return
-
         self.cargo[destination] += amount
         logging.info(f"{self.name} : villager dropped {amount} units of cargo destined to station {destination}")
 
@@ -105,7 +102,7 @@ async def villager_dropping_cargo(stations: Dict[StationId, Station]):
     while True:
         await asyncio.sleep(random.randint(1, 60))
         a, b = random_combination(stations.keys(), 2)
-        cargo = random.randint(0, MAX_CAPACITY)
+        cargo = random.randint(1, MAX_CAPACITY)
         stations[a].drop_cargo(b, cargo)
 
 
