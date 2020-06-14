@@ -22,7 +22,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USERNAME = "ankushbajoria007@gmail.com"
-SMTP_PASSWORD = "rqffvzoknjfwyhxe"
+SMTP_PASSWORD = Path("/Users/ankanu/gmail_smtp.txt").read_text().strip()
 
 
 def send_mail(send_to, subject, body, text_type="text", files=None):

@@ -38,13 +38,11 @@ class Train:
         self.cargo: Dict[StationId, int] = defaultdict(int)
         self.speed = speed
 
-    async def load_cargo(self, destination: StationId, units: int):
-        available = self.capacity - sum(self.cargo.values(), 0)
-        share = min(units, available)
+    @property
+    def free_capacity(self):
+        return self.capacity - sum(self.cargo.values(), 0)
 
-        if share == 0:
-            return 0
-
+    async def load_cargo(self, destination: StationId, share: int):
         await asyncio.sleep(int(np.ceil(share * UNIT_LOAD_TIME)))
         logging.info(f"{self.name} : loaded {share} units cargo destined to station {destination}")
         self.cargo[destination] += share
@@ -85,11 +83,15 @@ class Station:
         if received != 0:
             logging.info(f"{self.name} : received {received} units cargo delivered by train {train.id}")
 
-        for dst in self.cargo:
-            loaded = await train.load_cargo(dst, self.cargo[dst])
-            if loaded == 0 and self.cargo[dst] != 0:
+        for dst in [k for k, v in self.cargo.items() if v != 0]:
+            share = self.cargo[dst]
+            share = min(train.free_capacity, share)
+
+            if share == 0:
                 break
-            self.cargo[dst] -= loaded
+
+            self.cargo[dst] -= share
+            await train.load_cargo(dst, share)
 
 
 async def move_train(train: Train, tracks: List[Track], stations: Dict[StationId, Station]):
