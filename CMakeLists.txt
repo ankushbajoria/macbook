@@ -10,6 +10,7 @@ include(GoogleTest)
 
 add_subdirectory(gtest-1.7.0)
 
+# from https://cliutils.gitlab.io/modern-cmake/chapters/testing/googletest.html
 macro(package_add_test TESTNAME)
     # create an exectuable in which the tests will be stored
     add_executable(${TESTNAME} ${ARGN})
@@ -27,7 +28,8 @@ macro(package_add_test TESTNAME)
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
 
+
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/PostFixCalc)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/PostFixCalculator)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/OrderBook)

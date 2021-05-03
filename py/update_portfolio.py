@@ -19,6 +19,7 @@ from mftool import Mftool
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
+
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USERNAME = "ankushbajoria007@gmail.com"
@@ -61,13 +62,24 @@ def get_conversion(ccy: str):
     return ccy_rates.get_rate("USD", ccy)
 
 
-def get_last_close(symbol: str, t: str):
+def get_last_close(symbol: str, t: str, buy_px: float):
     if t == "stock":
         ticker = yf.Ticker(symbol)
         history = ticker.history()
         history = history[history.Volume != 0]
         last_close = history.iloc[-1].Close
         return last_close
+    elif t == "fd":
+        _, roi, start_date, end_date = symbol.split('_')
+        start_date = datetime.datetime.strptime(start_date, '%Y%m%d').date()
+        end_date = datetime.datetime.strptime(end_date, '%Y%m%d').date()
+        roi = float(roi.replace('%', ''))
+        date = datetime.date.today()
+        period = (min(end_date, date) - start_date).days
+        # NOTE: simple interest for now
+        return 1 + (roi * period / (365 * 100))
+    elif t == "fixed":
+        return buy_px
     
     assert (t == "mf")
 
@@ -75,6 +87,7 @@ def get_last_close(symbol: str, t: str):
 
 
 def update_prices(portfolio: pd.DataFrame):
+    portfolio["position"] = portfolio.position.astype(float)
     cost_basis = 0
     mark_to_market = 0
 
@@ -83,7 +96,7 @@ def update_prices(portfolio: pd.DataFrame):
     notionals = []
     invested_amounts = []
     for i, row in portfolio.iterrows():
-        last_close = get_last_close(row["symbol"], row["type"])
+        last_close = get_last_close(row["symbol"], row["type"], row['buy_price'])
         current_conversion = get_conversion(row["currency"])
         cost_basis += row["buy_price"] * row["position"] / current_conversion
         mark_to_market += last_close * row["position"] / current_conversion
@@ -115,7 +128,6 @@ def main():
     parser.add_argument("--mail", action="store_true")
 
     args = parser.parse_args()
-
     portfolio_path = Path(args.portfolio)
 
     if not portfolio_path.exists():
@@ -135,6 +147,7 @@ def main():
 
     bond_df = portfolio[portfolio.category == "bond"]
     equity_df = portfolio[portfolio.category == "equity"]
+    fd_df = portfolio[portfolio.category == "FD"]
 
     bond_return = (bond_df.notional.sum() - bond_df.invested.sum()) / bond_df.invested.sum() * 100
     equity_return = (equity_df.notional.sum() - equity_df.invested.sum()) / equity_df.invested.sum() * 100
@@ -142,8 +155,10 @@ def main():
 
     bond_percentage = bond_df.notional.sum() / total["notional"] * 100
     equity_percentage = equity_df.notional.sum() / total["notional"] * 100
+    fd_percentage = fd_df.notional.sum() / total["notional"] * 100
 
-    total["desc"] = f"bond: {bond_percentage:.2f}%, equity: {equity_percentage:.2f}%"
+    total["desc"] = f"bond: {bond_percentage:.2f}%, equity: {equity_percentage:.2f}%, fd: {fd_percentage:.2f}%"
+    total["position"] = f"bond: {bond_df.notional.sum().astype(int)}, equity: {equity_df.notional.sum().astype(int)}, fd: {fd_df.notional.sum().astype(int)}"
 
     portfolio = portfolio.append(total, ignore_index=True)
     portfolio["return"] = (portfolio["notional"] - portfolio["invested"]) / portfolio["invested"] * 100

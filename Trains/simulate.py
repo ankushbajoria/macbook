@@ -133,7 +133,7 @@ def main():
     if args.num_stations < 2:
         raise RuntimeError("num-stations must be >= 2")
 
-    if args.num_trains < 1:
+    if args.num_trains < 1:~
         raise RuntimeError("num-trains must be >= 1")
 
     stations = {}
